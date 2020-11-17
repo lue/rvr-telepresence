@@ -112,7 +112,7 @@ async def main():
         
         if shift_update != 0:
             await rvr.drive_with_heading(16, heading, flags)
-            time.sleep(1)
+            await asyncio.sleep(1)
             await rvr.drive_with_heading(0, heading, flags)
             shift_update=0
 
