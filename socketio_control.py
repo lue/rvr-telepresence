@@ -11,6 +11,7 @@ from sphero_sdk import SerialAsyncDal
 from sphero_sdk import SpheroRvrAsync
 
 # Socket io
+import time
 import socketio
 sio = socketio.Client()
 
@@ -24,6 +25,7 @@ heading = 0
 flags = 0
 
 heading_update = 0
+shift_update = 0
 
 loop = asyncio.get_event_loop()
 rvr = SpheroRvrAsync(
@@ -42,7 +44,16 @@ def on_message(data):
     param = int(data['message'][1:])
     if instruction == 'r':
         speed = 0
-        heading_update = 10
+        heading_update = param
+    
+    if instruction == 'l':
+        speed = 0
+        heading_update = -param
+    
+    if instruction == 'f':
+        speed = 0
+        shift_update = param
+     
     sio.emit('doc', {'message': 'done'})
 
 
@@ -98,6 +109,12 @@ async def main():
 
         # issue the driving command
         await rvr.drive_with_heading(speed, heading, flags)
+        
+        if shift_update != 0:
+            await rvr.drive_with_heading(16, heading, flags)
+            time.sleep(1)
+            await rvr.drive_with_heading(0, heading, flags)
+            shift_update=0
 
         # sleep the infinite loop for a 10th of a second to avoid flooding the serial port.
         await asyncio.sleep(0.1)
