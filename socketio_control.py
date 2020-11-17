@@ -39,6 +39,8 @@ rvr = SpheroRvrAsync(
 def on_message(data):
     global speed
     global heading_update
+    global shift_update
+    
     print(data['message'])
     instruction = data['message'][0]
     param = int(data['message'][1:])
@@ -81,6 +83,7 @@ async def main():
     global heading
     global heading_update
     global flags
+    global shift_update
 
     await rvr.wake()
 
