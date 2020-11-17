@@ -87,7 +87,9 @@ async def main():
     await rvr.reset_yaw()
 
     while True:
-
+        
+        print("heading", heading)
+        
         if heading_update != 0:
             heading += heading_update
             heading_update = 0
@@ -111,7 +113,7 @@ async def main():
         await rvr.drive_with_heading(speed, heading, flags)
         
         if shift_update != 0:
-            await rvr.drive_with_heading(16, heading, flags)
+            await rvr.drive_with_heading(32, heading, flags)
             await asyncio.sleep(1)
             await rvr.drive_with_heading(0, heading, flags)
             shift_update=0
