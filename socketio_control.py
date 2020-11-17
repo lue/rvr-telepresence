@@ -46,6 +46,9 @@ def on_message(data):
     sio.emit('doc', {'message': 'done'})
 
 
+sio.connect('http://instinctive-capable-pony.glitch.me')
+sio.emit('doc', {'message': 'connected'})
+
 
 def keycode_callback(keycode):
     global current_key_code
